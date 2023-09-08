@@ -27,10 +27,10 @@ const AppDatePicker = ({
           <AppText>Date of Birth</AppText>
           {!showPicker && (
             <Pressable onPress={onPress}>
-              <TextInput placeholder="dd/mm/yyyy" editable={false} value={value?.toString()} />
+              <TextInput placeholder="dd/mm/yyyy" editable={false} value={value} />
             </Pressable>
           )}
-          {showPicker && <DateTimePicker textColor="black"  dateFormat="day month year" mode="date" {...otherProps} />}
+          {showPicker && <DateTimePicker textColor="black"  mode="date" {...otherProps} />}
         </View>
       )}
     }

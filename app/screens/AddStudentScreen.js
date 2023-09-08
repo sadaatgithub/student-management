@@ -106,13 +106,12 @@ const AddStudentScreen = ({ route }) => {
     // console.log(e.target.name)
     if (type == "set") {
       const currentDate = selectedDate;
-      console.log(selectedDate);
       setDate(currentDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        setDateOfBirth(currentDate.toDateString());
-        setValue("dateOfBirth", currentDate);
+        // setDateOfBirth(currentDate.toDateString());
+        setValue("dateOfBirth", currentDate.toDateString());
       }
     } else {
       toggleDatePicker();
@@ -149,7 +148,7 @@ const AddStudentScreen = ({ route }) => {
 
           <AppDatePicker
             showPicker={showPicker}
-            date={dateOfBirth}
+            // date={dateOfBirth}
             onPress={toggleDatePicker}
             value={date}
             display="spinner"
@@ -237,7 +236,7 @@ const AddStudentScreen = ({ route }) => {
               keyboardType="numeric"
             /> */}
           </View>
-          <SubmitButton title="Add" onPress={handleSubmit(onSubmit)} />
+          <SubmitButton title={`${!student? "Add":"Update"}`} onPress={handleSubmit(onSubmit)} />
         </View>
       </ScrollView>
     </Screen>
