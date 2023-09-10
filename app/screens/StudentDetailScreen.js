@@ -1,40 +1,34 @@
-import { Image, ScrollView, StyleSheet, Alert, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Alert, View, Text } from "react-native";
 import React, { useState } from "react";
 import Screen from "../components/Screen";
 import AppText from "../components/heading/AppText";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import StudentDetail from "../components/StudentDetail";
-import UploadScreen from "./UploadScreen";
-import studentApi from "../api/endPoints"
+import studentApi from "../api/endPoints";
 import DeleteScreen from "./DeleteScreen";
 
-
 const StudentDetailScreen = ({ route, navigation }) => {
-  // const navigation = useNavigation();
-  const [uploadVisible, setUploadVisible] = useState(true);
+  const [deleteVisible, setDeleteVisible] = useState(false);
   const student = route.params;
 
   const handleDelete = async (id) => {
-    setUploadVisible(true);
-    const result = await studentApi.deleteStudent(id)
+    setDeleteVisible(true);
+    const result = await studentApi.deleteStudent(id);
     if (!result.ok) {
-      setUploadVisible(false);
+      setDeleteVisible(false);
       return alert("Could not Delete Student");
     }
+    navigation.navigate("Students");
   };
-  // const onDelete = (id) => {
-  //   console.log(id);
-  // };
 
   return (
     <Screen style={styles.screen}>
-       
       <ScrollView style={styles.flexDiv}>
-      <DeleteScreen
-        onDone={() => setUploadVisible(false)}
-        visible={uploadVisible}
-      />
+        <DeleteScreen
+          onDone={() => setDeleteVisible(false)}
+          visible={deleteVisible}
+        />
 
         <View style={styles.detailContainer}>
           {/* profile banner */}
@@ -99,12 +93,11 @@ const StudentDetailScreen = ({ route, navigation }) => {
             />
             <StudentDetail label="GPA" value={student.academicInfo?.gpa} />
           </View>
-          {/* <View style={{ paddingHorizontal: 10 }}>
+          <View style={{ paddingHorizontal: 10 }}>
           <AppText style={{ fontSize: 20,marginBottom:8 }}>Extracurricular Activities</AppText>
-            {student.extracurricularActivities?.map(item =>{
-              <Text>{item}</Text>
-            })}
-          </View> */}
+            {student.extracurricularActivities?.map(item =><Text>{item}</Text>
+            )}
+          </View>
           <View style={{ paddingHorizontal: 10 }}>
             <AppText style={{ fontSize: 20, marginBottom: 8 }}>
               Health Info
