@@ -24,7 +24,7 @@ const AppDatePicker = ({
       { 
         return(
         <View style={styles.container}>
-          <AppText>Date of Birth</AppText>
+          <AppText style={styles.text}>DOB</AppText>
           {!showPicker && (
             <Pressable onPress={onPress}>
               <TextInput placeholder="dd/mm/yyyy" editable={false} value={value} />
@@ -43,6 +43,14 @@ export default AppDatePicker;
 const styles = StyleSheet.create({
   container:{
     backgroundColor:colors.light,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical:10,
+    flexDirection:"row",
+    gap:10,
+    borderRadius:8,
+    alignItems:"center"
+  },
+  text:{
+    fontSize:16
   }
 });

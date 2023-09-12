@@ -9,7 +9,6 @@ import React from "react";
 import AppText from "./heading/AppText";
 import colors from "../config/colors";
 import ProgressBar from "react-native-progress/Bar";
-// import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 const Card = ({ title, subtitle, imageUrl, onPress }) => {
   return (
@@ -22,13 +21,13 @@ const Card = ({ title, subtitle, imageUrl, onPress }) => {
             <AppText style={styles.subTitle}>{subtitle}</AppText>
             <View style={styles.progress}>
             <ProgressBar
-              progress={0.6}
+              progress={0.45}
               width={90}
               height={4}
               borderWidth={0}
               style={{ marginTop: 8 }}
               unfilledColor={colors.light}
-              color={colors.primary}
+              color={colors.secondary}
             />
             <Text style={styles.progressText}>45% completed</Text>
             </View>
@@ -89,8 +88,8 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   subTitle: {
-    color: colors.secondary,
-    fontWeight: "bold",
+    color: colors.primary,
+    fontWeight: "thin",
     fontSize: 14,
   },
   detailsContainer: {

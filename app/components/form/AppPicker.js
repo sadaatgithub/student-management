@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import defaultStyles from "../../config/styles";
 import colors from "../../config/colors";
 
-const AppPicker = ({ icon, placeholder, items, width, ...otherProps }) => {
+const AppPicker = ({ icon, placeholder, items, width,...otherProps }) => {
   return (
     <View
       style={styles.container}
@@ -20,16 +20,19 @@ const AppPicker = ({ icon, placeholder, items, width, ...otherProps }) => {
             stye={styles.icon}
           />
         )}
-        <AppText>{placeholder}</AppText>
+        <AppText style={styles.text}>{placeholder}</AppText>
       </View>
       <Picker
         dropdownIconRippleColor="lightblue"
-        prompt={`Choose ${placeholder}`}
+        // prompt={`Choose ${placeholder}`}
+        selectionColor={"blue"}
+        // mode="dropdown"
+
         {...otherProps}
         style={{ width: 150 }}
       >
-        {items.map((item) => (
-          <Picker.Item key={item.value} label={item.label} value={item.value} />
+        {items.map((item,idx) => (
+          <Picker.Item key={item.value} label={item.label} value={item.value} enabled={idx!==0}/>
         ))}
       </Picker>
     </View>
@@ -40,12 +43,16 @@ export default AppPicker;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    // padding: 12,
+    paddingHorizontal:12,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor:colors.light,
-    marginTop:10,
     borderRadius:8
   },
+  text:{
+    fontSize:16,
+    color:colors.medium
+  }
 });

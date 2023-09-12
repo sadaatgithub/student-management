@@ -6,12 +6,17 @@ import {
   ActivityIndicator,
   Button,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Screen from "../components/Screen";
 import Card from "../components/Card";
 import useApi from "../api/useApi";
 import studentApi from "../api/endPoints";
 import AppText from "../components/heading/AppText";
+import StoreContext from "../store/context";
+import AppFormField from "../components/form/AppFormField";
+import { TextInput } from "react-native-gesture-handler";
+import AppTextInput from "../components/form/AppTextInput";
+import colors from "../config/colors";
 
 const students = [
   {
@@ -170,23 +175,31 @@ const students = [
 ];
 
 const StudentListScreen = ({ navigation }) => {
-  const getStudentsApi = useApi(studentApi.getStudents);
+  const {students,getStudents} = useContext(StoreContext)
   const [refreshing, setRefreshing] = useState(false);
-  useEffect(() => {
-    getStudentsApi.request();
-  }, []);
+  const [filterText, setFilterBy] = useState('')
+
+  useEffect(() =>{
+    if(!students){
+      getStudents()}
+
+  },[])
+  
   return (
     <View style={styles.screen}>
-      {getStudentsApi.error && (
-        <>
-          <AppText>Couldnt retrieve the strudent list</AppText>
-          <Button title="Refresh" onPress={getStudentsApi.request}/>
-        </>
+      {!students && (
+        <View style={styles.refetchBtn}>
+          <AppText>Couldnt retrieve the student list</AppText>
+          <Button title="Refresh" onPress={getStudents}/>
+        </View>
       )}
-
-      <ActivityIndicator animating={getStudentsApi.loading} size={40} style={{top:"50%", zIndex:1}}/>
+      {/* <AppFormField/> */}
+      <View style={styles.searchContainer}>
+      <AppTextInput icon="account-search" iconSize={30} placeholder="Student Search" onChangeText={(value) => setFilterBy(value)}/>
+      </View>
+      {/* <ActivityIndicator animating={getStudentsApi.loading} size={40} style={{top:"50%", zIndex:1}}/> */}
       <FlatList
-        data={getStudentsApi.data['data']}
+        data={students?.filter(stu => stu.firstName.includes(filterText) || stu.academicInfo?.studentId?.includes(filterText) || stu.lastName.includes(filterText))}
         keyExtractor={(student) => student._id.toString()}
         
         renderItem={({ item }) => (
@@ -198,7 +211,7 @@ const StudentListScreen = ({ navigation }) => {
           />
         )}
         refreshing={refreshing}
-        onRefresh={() => getStudentsApi.request()}
+        onRefresh={getStudents}
       />
     </View>
   );
@@ -211,5 +224,24 @@ const styles = StyleSheet.create({
     paddingVertical:4,
     position:"relative",
     flex:1,
+  },
+  // refetchBtn:{
+  //   alignSelf:"center",
+  //   top:"50%",
+  //   gap:10
+  // },
+  searchContainer:{
+    paddingHorizontal:10,
+    backgroundColor:colors.white,
+    paddingVertical:12,
+    shadowColor: "gray",
+    shadowOffset: {
+      width: 2,
+      height: 8,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 2,
+
   }
 });

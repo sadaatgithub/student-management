@@ -1,9 +1,15 @@
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, ImageBackground, Button } from "react-native";
+import React, { useContext, useEffect } from "react";
 import AppButton from "../components/AppButton";
-import MainNavigator from "../navigation/MainNavigator";
-import { StatusBar } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import colors from "../config/colors";
+import StoreContext from "../store/context";
+
 const WelcomeScreen = ({navigation}) => {
+  const {students,getStudents} = useContext(StoreContext)
+  // console.log(students)
+  
+ 
   return (
     <>
     {/* <StatusBar
@@ -13,17 +19,20 @@ const WelcomeScreen = ({navigation}) => {
     <ImageBackground
       style={styles.background}
       blurRadius={20}
-      source={require("../assets/welcome_2.jpg")}
+      source={require("../assets/welcome.jpg")}
       
     >
       <View style={styles.welcomeContainer}>
-        <Text style={styles.text}>Welcome to Student Management</Text>
+        <MaterialCommunityIcons name="school" size={120} color={colors.secondary}/>
+        <Text style={styles.text}>Student Registry</Text>
+
         
       </View>
       <View style={styles.btnContainer}>
             <AppButton title="Start" onPress={() => navigation.navigate("Main")} />
 
         </View>
+        {/* <Button title="Get Students" onPress={getStudents}/> */}
     </ImageBackground>
     </>
   );
@@ -41,7 +50,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width:'100%',
-    top:"50%"
+    top:"25%",
+    gap:20
 
   },
   text: {

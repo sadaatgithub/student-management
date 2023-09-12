@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet, Alert, View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Screen from "../components/Screen";
 import AppText from "../components/heading/AppText";
 import AppButton from "../components/AppButton";
@@ -7,10 +7,18 @@ import colors from "../config/colors";
 import StudentDetail from "../components/StudentDetail";
 import studentApi from "../api/endPoints";
 import DeleteScreen from "./DeleteScreen";
+import StudentDetailHeading from "../components/heading/StudentDetailHeading";
+import StoreContext from "../store/context";
+
+
 
 const StudentDetailScreen = ({ route, navigation }) => {
   const [deleteVisible, setDeleteVisible] = useState(false);
+  const {students,getStudents} = useContext(StoreContext)
+
   const student = route.params;
+  
+ 
 
   const handleDelete = async (id) => {
     setDeleteVisible(true);
@@ -33,19 +41,18 @@ const StudentDetailScreen = ({ route, navigation }) => {
         <View style={styles.detailContainer}>
           {/* profile banner */}
           <View style={styles.profileBack}>
-            <Image style={styles.image} source={student.image} />
+            <Image style={styles.image} source={require("../assets/student_3.jpg")} />
           </View>
 
           <View style={styles.nameContainer}>
             <AppText style={styles.title}>
               {student.firstName + " " + student.lastName}
             </AppText>
-            <AppText>{student.academicInfo?.studentId}</AppText>
+            {/* <AppText>{student.academicInfo?.studentId}</AppText> */}
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <AppText style={{ fontSize: 20, marginBottom: 8 }}>
-              Personal Info
-            </AppText>
+
+          <View>
+            <StudentDetailHeading title="Personal Info" />
             <StudentDetail
               label="Student ID"
               value={student.academicInfo?.studentId}
@@ -55,8 +62,8 @@ const StudentDetailScreen = ({ route, navigation }) => {
             <StudentDetail label="Mobile" value={student.contactNumber} />
             <StudentDetail label="Email" value={student.email} />
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <AppText style={{ fontSize: 20, marginBottom: 8 }}>Address</AppText>
+          <View>
+            <StudentDetailHeading title="Address" />
             <StudentDetail label="Street" value={student.address?.street} />
             <StudentDetail label="City" value={student.address?.city} />
             <StudentDetail label="State" value={student.address?.state} />
@@ -66,10 +73,8 @@ const StudentDetailScreen = ({ route, navigation }) => {
             />
             <StudentDetail label="Email" value={student.email} />
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <AppText style={{ fontSize: 20, marginBottom: 8 }}>
-              Academic Info
-            </AppText>
+          <View>
+            <StudentDetailHeading title="Academic Info" />
             <StudentDetail
               label="Enrollment Date"
               value={student.academicInfo?.enrollmentDate}
@@ -93,15 +98,21 @@ const StudentDetailScreen = ({ route, navigation }) => {
             />
             <StudentDetail label="GPA" value={student.academicInfo?.gpa} />
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-          <AppText style={{ fontSize: 20,marginBottom:8 }}>Extracurricular Activities</AppText>
-            {student.extracurricularActivities?.map(item =><Text>{item}</Text>
-            )}
+          <View>
+            <StudentDetailHeading title="Extra curricular activities" />
+            <View style={styles.extraActivity}>
+              {student.extracurricularActivities?.map((item, idx) => (
+                <Text
+                  key={idx}
+                  style={{color:colors.medium }}
+                >
+                  {item} {" "}
+                </Text>
+              ))}
+            </View>
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <AppText style={{ fontSize: 20, marginBottom: 8 }}>
-              Health Info
-            </AppText>
+          <View>
+            <StudentDetailHeading title="Health Info" />
             <StudentDetail
               label="Medical History"
               value={student.healthInfo?.medicalHistory}
@@ -112,9 +123,9 @@ const StudentDetailScreen = ({ route, navigation }) => {
             />
             <StudentDetail
               label="Prescriptions"
-              value={student.healthInfo?.prescriptions}
+              value={student.healthInfo?.prescription}
             />
-            <AppText style={{ fontSize: 18, marginLeft: 8 }}>
+            <AppText style={{ fontSize: 16, marginLeft: 8,marginTop:6,fontWeight:"bold",color:colors.medium }}>
               Emergency Contact
             </AppText>
             <StudentDetail
@@ -130,11 +141,11 @@ const StudentDetailScreen = ({ route, navigation }) => {
               value={student.healthInfo?.emergencyContact?.phone}
             />
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <AppText style={{ fontSize: 20, marginBottom: 8 }}>
-              Notes and Comments
-            </AppText>
-            <AppText style={{ color: "gray" }}>
+          <View>
+            <StudentDetailHeading title="Notes & Comments" />
+            <AppText
+              style={{ color: "gray", paddingHorizontal: 8, fontSize: 16 }}
+            >
               {student.notesAndComments}
             </AppText>
           </View>
@@ -179,28 +190,29 @@ const styles = StyleSheet.create({
 
   profileBack: {
     width: "100%",
-    height: 150,
+    height: 80,
     backgroundColor: colors.secondary,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderRadius: 150,
     overflow: "hidden",
     position: "absolute",
-    left: "30%",
-    top: "50%",
+    left: "35%",
+    top: "35%",
     borderWidth: 5,
     borderColor: colors.light,
     // shadowColor:'gray',
     // shadowOffset:5
   },
   nameContainer: {
-    marginTop: 100,
+    marginTop: 50,
     paddingHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
     gap: 6,
+    marginBottom:18
   },
   title: {
     fontSize: 22,
@@ -211,6 +223,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 10,
     paddingVertical: 8,
+  },
+  extraActivity: {
+    flexDirection: "row",
+    paddingHorizontal:10,
+    paddingVertical:4
   },
   btn: {
     width: 65,

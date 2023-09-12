@@ -9,7 +9,9 @@ const AppFormPicker = ({control,items,name,placeholder,width}) => {
     <Controller
     control={control}
     name={name}
-    render={({field:{value,onChange,onBlur},fieldState:{error},})=>(
+    render={({field:{value,onChange,onBlur},fieldState:{error},})=>
+    { 
+      return (
       <>
     <AppPicker 
             items={items}
@@ -17,11 +19,11 @@ const AppFormPicker = ({control,items,name,placeholder,width}) => {
             selectedValue={value}
             onValueChange={onChange}
             width={width}
-            onBlur={onBlur}
+            // onBlur={onBlur}
             
             />
              </>  
-        )}/>
+        )}}/>
   )
 }
 
